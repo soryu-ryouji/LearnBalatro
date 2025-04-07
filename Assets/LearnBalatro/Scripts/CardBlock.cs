@@ -1,22 +1,27 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace LearnBalatro
 {
-    public class CardBlock : MonoBehaviour
+    public class CardBlock : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        public float rotationAngle = 10f;
+        [HideInInspector] public bool isHovering;
+        [HideInInspector] public bool isDragging;
+        [HideInInspector] public bool wasDragged;
+        [HideInInspector] public bool isSelected;
 
-        private void Update()
+        public VisualCard visualCard;
+
+        public void OnPointerEnter(PointerEventData eventData)
         {
-            Idle();
+            visualCard.EnterPointer(this);
+            isHovering = true;
         }
 
-        private void Idle()
+        public void OnPointerExit(PointerEventData eventData)
         {
-            float sine = Mathf.Sin(Time.time);
-            float cosine = Mathf.Cos(Time.time);
-
-            transform.rotation = Quaternion.Euler(sine * rotationAngle, cosine * rotationAngle, 0);
+            visualCard.ExitPointer(this);
+            isHovering = false;
         }
     }
 }
